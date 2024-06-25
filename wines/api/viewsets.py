@@ -8,8 +8,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 
 from suppliers.models import Supplier
-from wines.models import Wine, MovimentoEstoque
-from wines.api.serializers import WineSerializer, MovimentoEstoqueSerializer
+from wines.models import Wine, MovimentoEstoque, MarkupRule
+from wines.api.serializers import WineSerializer, MovimentoEstoqueSerializer, MarkupRuleSerializer
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -21,8 +21,23 @@ class WineViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
     def get_queryset(self):
         return Wine.objects.filter(user=self.request.user)
+
+
+class MarkupRuleViewSet(viewsets.ModelViewSet):
+    queryset = MarkupRule.objects.all()
+    serializer_class = MarkupRuleSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        return MarkupRule.objects.filter(user=self.request.user)
 
 
 class ExportExcelView(APIView):
