@@ -1,3 +1,1 @@
 web: gunicorn app_wine.wsgi:application --bind 0.0.0.0:$PORT
-worker: celery -A app_wine worker --loglevel=info
-

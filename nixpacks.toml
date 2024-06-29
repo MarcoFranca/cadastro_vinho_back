@@ -1,0 +1,2 @@
+[phases.start]
+run = "gunicorn app_wine.wsgi:application --bind 0.0.0.0:$PORT"
