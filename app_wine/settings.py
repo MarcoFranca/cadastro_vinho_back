@@ -197,7 +197,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # CONFIGURAÇÕES ADICIONAIS
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Configurações do Celery
-CELERY_BROKER_URL = env('REDIS_URL')
-CELERY_RESULT_BACKEND = env('REDIS_URL')
