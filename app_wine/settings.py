@@ -11,7 +11,7 @@ env = environ.Env(
     DEBUG=(bool, False)
 )
 
-# Verifique se as variáveis de ambiente são carregadas corretamente
+# Carregar variáveis de ambiente se o arquivo .env existir
 if os.path.exists(os.path.join(BASE_DIR, '.env')):
     environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
