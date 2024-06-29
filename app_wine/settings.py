@@ -12,8 +12,7 @@ env = environ.Env(
 )
 
 # Carregar variáveis de ambiente se o arquivo .env existir
-if os.path.exists(os.path.join(BASE_DIR, '.env')):
-    environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # SECRET_KEY e DEBUG
 SECRET_KEY = env('SECRET_KEY')
