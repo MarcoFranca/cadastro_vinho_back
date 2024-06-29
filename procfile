@@ -1,0 +1,3 @@
+web: gunicorn app_wine.wsgi
+worker: celery -A app_wine worker --loglevel=info
+

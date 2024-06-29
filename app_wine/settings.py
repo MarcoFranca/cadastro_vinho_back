@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.apple',
     'rest_framework_simplejwt',
     'corsheaders',
-    'suppliers'
+    'suppliers',
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 # MIDDLEWARE
@@ -56,7 +58,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'django.middleware.http.StrictTransportSecurityMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'allauth.account.middleware.AccountMiddleware',
@@ -87,14 +88,13 @@ WSGI_APPLICATION = 'app_wine.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
+        'NAME': env('PGDATABASE'),
+        'USER': env('PGUSER'),
+        'PASSWORD': env('PGPASSWORD'),
+        'HOST': env('PGHOST'),
+        'PORT': env('PGPORT'),
     }
 }
-
 
 # AUTENTICAÇÃO
 AUTH_PASSWORD_VALIDATORS = [
@@ -175,14 +175,12 @@ SOCIALACCOUNT_REDIRECT_URL = '/'
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
 
 # EMAIL
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-
 
 # INTERNACIONALIZAÇÃO
 LANGUAGE_CODE = 'en-us'
@@ -195,8 +193,9 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# LOGGING
-
-
 # CONFIGURAÇÕES ADICIONAIS
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configurações do Celery
+CELERY_BROKER_URL = env('REDIS_URL')
+CELERY_RESULT_BACKEND = env('REDIS_URL')
