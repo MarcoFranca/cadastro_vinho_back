@@ -7,6 +7,7 @@ from users.models import CustomUser
 
 logger = logging.getLogger(__name__)
 
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         username = attrs.get('username')

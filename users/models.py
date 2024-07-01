@@ -4,7 +4,6 @@ from django.utils import timezone
 import uuid
 
 
-
 class CustomUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     groups = models.ManyToManyField(Group, related_name='customuser_set')
