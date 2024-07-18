@@ -43,7 +43,7 @@ class Wine(models.Model):
     tamanho = models.CharField(max_length=10, choices=TAMANHO_CHOICES)
     fornecedores = models.ManyToManyField(Supplier, related_name='vinhos')
     valor_custo = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
-    markup = models.DecimalField(max_digits=5, decimal_places=2, default=0.0, editable=False)
+    markup = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal('0.0'), editable=False)
     preco_venda = models.DecimalField(max_digits=10, decimal_places=2, blank=True, editable=False)
     estoque = models.PositiveIntegerField(default=0)
     descricao = models.TextField(blank=True, null=True)
@@ -56,13 +56,20 @@ class Wine(models.Model):
                                                         max_price__gte=self.valor_custo).first()
         if applicable_rule:
             self.markup = applicable_rule.percentage
-        self.preco_venda = self.valor_custo * (1 + self.markup / 100)
+
+        # Garantir que ambos os valores sejam Decimal
+        valor_custo_decimal = Decimal(self.valor_custo)
+        markup_decimal = Decimal(self.markup)
+        self.preco_venda = valor_custo_decimal * (Decimal('1.0') + markup_decimal / Decimal('100'))
 
         # Handle image compression
-        if self.pk:
-            old_instance = Wine.objects.get(pk=self.pk)
-            if old_instance.imagem and old_instance.imagem != self.imagem:
-                old_instance.imagem.delete(save=False)
+        if not self._state.adding:
+            try:
+                old_instance = Wine.objects.get(pk=self.pk)
+                if old_instance.imagem and old_instance.imagem != self.imagem:
+                    old_instance.imagem.delete(save=False)
+            except Wine.DoesNotExist:
+                pass
         super(Wine, self).save(*args, **kwargs)
         if self.imagem:
             self.compress_image()

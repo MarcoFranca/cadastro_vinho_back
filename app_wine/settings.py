@@ -19,7 +19,11 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 # ALLOWED_HOSTS
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '.railway.app'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost',
+                                                   '127.0.0.1',
+                                                   '.railway.app',
+                                                   'vinomanager.vercel.app',
+                                                   'cadastrovinhoback-production.up.railway.app'])
 
 # CORS
 CORS_ALLOWED_ORIGINS = [
